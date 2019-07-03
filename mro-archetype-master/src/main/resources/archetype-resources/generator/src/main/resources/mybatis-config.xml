@@ -1,0 +1,66 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+
+<generatorConfiguration>
+    <context id="context1" targetRuntime="MyBatis3">
+
+        <!-- 指定生成的java文件的编码,没有直接生成到项目时中文可能会乱码 -->
+        <property name="javaFileEncoding" value="UTF-8"/>
+
+        <plugin type="${package}.generator.LombokPlugin" >
+            <property name="hasLombok" value="true"/>
+        </plugin>
+
+        <commentGenerator type="${package}.generator.YzwCommentGenerator"/>
+
+        <!-- mysql配置 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://172.16.0.145:3306/mro?useUnicode=true&amp;characterEncoding=utf-8" userId="root"
+                        password="root1234">
+            <!-- 针对mysql数据库 -->
+            <property name="useInformationSchema" value="true"></property>
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!-- model class -->
+        <javaModelGenerator targetPackage="model"
+                            targetProject="generator/src/main/java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+            <property name="rootClass" value="cn.yzw.mro.common.model.BaseModel" />
+        </javaModelGenerator>
+
+        <!-- mybatis xml file -->
+        <!--<sqlMapGenerator targetPackage="dao"-->
+                         <!--targetProject="src/main/java">-->
+            <!--<property name="enableSubPackages" value="true" />-->
+        <!--</sqlMapGenerator>-->
+
+        <!-- mapper class -->
+        <!--<javaClientGenerator type="XMLMAPPER"-->
+                             <!--targetPackage="dao" targetProject="src/main/java">-->
+            <!--<property name="enableSubPackages" value="true" />-->
+        <!--</javaClientGenerator>-->
+
+        <!--需要生成的实体类 -->
+        <table schema="" tableName="order" domainObjectName="Order"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+
+        <table schema="" tableName="order_detail" domainObjectName="OrderDetail"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+
+    </context>
+</generatorConfiguration>

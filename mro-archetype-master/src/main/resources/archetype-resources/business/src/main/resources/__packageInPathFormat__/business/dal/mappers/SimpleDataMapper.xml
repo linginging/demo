@@ -1,0 +1,33 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="${package}.business.dal.mappers.SimpleDataMapper">
+
+    <select id="queryPageSimpleData" resultType="${package}.business.model.ModuleDetailModel" parameterType="${package}.business.model.SimpleDataPageReqModel">
+        select main.module ,main.module_name as moduleName,detail.id,detail.module_version as moduleVersion,detail.files,detail.created
+        from framework_module main  join framework_module_detail detail
+        on main.module=detail.module
+        <where>
+            <if test="module != null">
+                detail.module=${symbol_pound}{module}
+            </if>
+        </where>
+        <if test="sortField != null">
+            order by ${symbol_dollar}{sortField} ${symbol_dollar}{sortAsc}
+        </if>
+        limit ${symbol_pound}{pageStart} , ${symbol_pound}{pageSize}
+    </select>
+
+    <select id="queryPageTotal" resultType="java.lang.Integer" parameterType="${package}.business.model.SimpleDataPageReqModel">
+        select count(1) from framework_module main  join framework_module_detail detail
+        on main.module=detail.module
+        <where>
+            <if test="module != null">
+                detail.module=${symbol_pound}{module}
+            </if>
+        </where>
+    </select>
+
+</mapper>

@@ -1,0 +1,79 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="${package}.business.dal.mappers.OrderMapper">
+    <sql id="pagination">
+        <if test="sortField != null">
+            order by ${symbol_dollar}{sortField} ${symbol_dollar}{sortAsc}
+        </if>
+        limit ${symbol_pound}{pageStart} , ${symbol_pound}{pageSize}
+    </sql>
+    <sql id="condition">
+        <where>
+            <if test="orderCode != null and orderCode != ''">
+                AND order_code = ${symbol_pound}{orderCode}
+            </if>
+            <if test="supplierName != null and supplierName != ''">
+                AND supplier_name = ${symbol_pound}{supplierName}
+            </if>
+        </where>
+    </sql>
+    <sql id="mainFields">
+        order_code AS orderCode,
+        order_name AS orderName,
+        order_date AS orderDate,
+        organization_code AS organizationCode,
+        organization_id AS organizationId,
+        organization_name AS organizationName,
+        status,
+        supplier_id AS supplierId,
+        supplier_name AS supplierName,
+        total_amount AS totalAmount
+    </sql>
+    <sql id="mandatoryFields">
+      id,
+      in_date AS inDate,
+      in_user_id AS inUserID,
+      in_user_name AS inUserName,
+      edit_date AS EditDate,
+      edit_user_id AS EditUserID,
+      edit_user_name AS EditUserName
+    </sql>
+
+    <select id="search" parameterType="${package}.business.model.order.OrderSearchModel"
+            resultType="${package}.business.model.order.OrderModel">
+        SELECT
+        <include refid="mainFields"></include>,
+        <include refid="mandatoryFields"></include>
+        FROM `order`
+        <include refid="condition"></include>
+        <include refid="pagination"></include>
+    </select>
+
+    <select id="searchTotalCount" parameterType="${package}.business.model.order.OrderSearchModel"
+            resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM `order`
+        <include refid="condition"></include>
+    </select>
+
+    <insert id="insertOrder" parameterType="${package}.business.model.order.OrderModel">
+        insert into `order`(order_code, order_name, organization_id, organization_code, organization_name, supplier_id, supplier_name, order_date, total_amount,
+        id, in_date, in_user_id, status,in_user_name, edit_date, edit_user_id, edit_user_name)values(${symbol_pound}{orderCode},${symbol_pound}{orderName},${symbol_pound}{organizationId},${symbol_pound}{organizationCode},${symbol_pound}{organizationName},${symbol_pound}{supplierId},${symbol_pound}{supplierName},${symbol_pound}{orderDate},${symbol_pound}{totalAmount},
+        ${symbol_pound}{id}, ${symbol_pound}{inDate}, ${symbol_pound}{inUserId},${symbol_pound}{status}, ${symbol_pound}{inUserName}, ${symbol_pound}{editDate}, ${symbol_pound}{editUserId},${symbol_pound}{editUserName})
+    </insert>
+
+    <update id="updateOrder" parameterType="${package}.business.model.order.OrderModel">
+        update  `order` set order_name=${symbol_pound}{orderName}, organization_id=${symbol_pound}{organizationId}, organization_code=${symbol_pound}{organizationCode},
+        organization_name=${symbol_pound}{organizationName}, supplier_id=${symbol_pound}{supplierId}, supplier_name=${symbol_pound}{supplierName}, order_date=${symbol_pound}{orderDate}, total_amount=${symbol_pound}{totalAmount},
+        edit_date=${symbol_pound}{editDate},edit_user_id=${symbol_pound}{editUserId},edit_user_name=${symbol_pound}{editUserName}
+        where
+        order_code=${symbol_pound}{orderCode}
+    </update>
+
+    <delete id="deleteOrder" parameterType="java.lang.String">
+        delete from `order` where order_code=${symbol_pound}{orderCode}
+    </delete>
+
+</mapper>

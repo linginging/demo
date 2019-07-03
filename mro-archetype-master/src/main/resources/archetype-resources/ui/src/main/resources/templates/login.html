@@ -1,0 +1,27 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <title>云筑网-区块链网络(beta)</title>
+
+</head>
+<body class="layui-layout-body">
+
+<form method="post">
+
+    帐号：<input type="text" name="unique_name" th:value="${symbol_dollar}{unique_name}" /><br/>
+    密码：<input type="password" name="password" th:value="${symbol_dollar}{password}" /><br/>
+    记住：<input type="checkbox" name="remember" th:checked="${symbol_dollar}{remember}" /><br/>
+
+    <input type="submit" value="登录"  /><br/>
+    <span th:inline="text">[[${symbol_dollar}{tip}]]</span>
+
+</form>
+
+</body>
+</html>
